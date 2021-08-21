@@ -10,5 +10,5 @@ export async function main(ns) {
         await ns.sleep(200);
     }
 
-    ns.spawn("daemon.js");
+    ns.spawn("daemon.js", 1);
 }
