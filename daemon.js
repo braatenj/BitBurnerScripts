@@ -28,7 +28,7 @@ const arbitraryExecutionDelay = 12000;
 const queueDelay = 12000;
 
 // the max number of batches this daemon will spool up to avoid running out of IRL ram
-const maxBatches = 60;
+const maxBatches = 100;
 
 // the max number of targets this daemon will run workers against to avoid running out of IRL ram
 const maxTargets = 5;
@@ -87,7 +87,8 @@ export async function main(ns) {
         {name: "program-manager.js", shortName: "prog", isLaunched: false},
         {name: "ram-manager.js", shortName: "ram", isLaunched: false},
         {name: "agency-manager.js", shortName: "agent", isLaunched: false},
-        {name: "aug-manager.js", shortName: "aug", isLaunched: false}
+        {name: "aug-manager.js", shortName: "aug", isLaunched: false},
+        {name: "commit-crime.js", shortName: "crime", isLaunched: false}
     ];
     
     // get the name of this node
@@ -257,7 +258,7 @@ function establishMultipliers(ns) {
 }
 
 function buildToolkit(ns) {
-    var toolNames = ["weak-target.js", "grow-target.js", "hack-target.js", "host-manager.js", "node-manager.js", "tor-manager.js", "program-manager.js", "ram-manager.js", "agency-manager.js", "aug-manager.js"];
+    var toolNames = ["weak-target.js", "grow-target.js", "hack-target.js", "host-manager.js", "node-manager.js", "tor-manager.js", "program-manager.js", "ram-manager.js", "agency-manager.js", "aug-manager.js", "commit-crime.js"];
     for (var i = 0; i < toolNames.length; i++) {
         var tool = {
             instance: ns,
@@ -286,6 +287,8 @@ function buildToolkit(ns) {
                         return "agent";
                     case "aug-manager.js":
                         return "aug";
+                    case "commit-crime.js":
+                        return "crime";
                 }
             },       
             canRun: function(server) {

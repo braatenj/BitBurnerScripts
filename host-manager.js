@@ -11,7 +11,7 @@ const purchasedServerCostPerRam = 55000;
 const maxPurchasedServerRamExponent = 20;
 
 // the max number of servers you can have in your farm
-const maxPurchasedServers = 25;
+const maxPurchasedServers = 24;
 
 export async function main(ns) {
     while(true) {

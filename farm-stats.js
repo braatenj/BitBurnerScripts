@@ -9,8 +9,11 @@ export async function main(ns) {
     var totalRam = 0;
     var totalRamUsed = 0;
     var totalRamFree = 0;
+<<<<<<< Updated upstream
     var ramUtilization = 0;
 
+=======
+>>>>>>> Stashed changes
     ns.tprint("--==-- Server Farm Stats --==--");
     for (var s = 0; s < serverNameList.length; s++) {
         var box = serverNameList[s];
@@ -20,12 +23,14 @@ export async function main(ns) {
         var currentRam = ram[0] - ram[1];
         totalRamUsed += ram[1];
         var cost = maxRam * ramCostConstant;
+        totalRam += maxRam;
+        totalRamUsed += ram[1];
         ns.tprint(box + " Ram: " + currentRam + " / " + maxRam + " --==-- Cost: $" + cost);
     }
     totalRamFree = totalRam - totalRamUsed;
-    ramUtilization = (totalRamUsed / totalRam) * 100
-    ns.tprint("Total Ram: " + totalRam + "GB");
-    ns.tprint("Total Ram Used: " + totalRamUsed + "GB");
-    ns.tprint("Total Ram Free: " + totalRamFree + "GB");
-    ns.tprint("Ram Utilization: " + ramUtilization + "%");
+    ns.tprint("--==-- Server Farm Ram Utilization --==--");
+    ns.tprint("Total Ram: " + totalRam);
+    ns.tprint("Total Ram Used: " + totalRamUsed);
+    ns.tprint("Total Ram Free: " + totalRamFree);
+    ns.tprint("Ram Utilization (%): " + (totalRamUsed/totalRam)*100);
 }
