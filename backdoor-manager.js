@@ -31,11 +31,6 @@ export async function main(ns) {
         }
         await ns.sleep(5000);
     }
-
-
-
-
-
 }
 
 function buildServerObject(ns, node) {
