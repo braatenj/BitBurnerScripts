@@ -78,15 +78,15 @@ function getPortCrackers(ns) {
 
 
 async function doBackdoor(ns, server) {
-    ns.print(`Attempting to backdoor ${server.name}`);
+    ns.tprintf(`Attempting to backdoor ${server.name}`);
     var sequence = server.getConnectionSequence();
-    ns.print(`Retrieved connection sequence`);
+    ns.tprintf(`Retrieved connection sequence`);
     for(var i = 0; i < sequence.length; i++) {
         ns.connect(sequence[i]);
-        ns.print(`...connected to ${sequence[i]}`);
+        ns.tprintf(`...connected to ${sequence[i]}`);
         await ns.sleep(200);
     }
-    ns.print(`Installing backdoor on ${server.name}`);
+    ns.tprintf(`Installing backdoor on ${server.name}`);
     await ns.installBackdoor();
 }
 
