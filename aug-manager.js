@@ -73,7 +73,7 @@ export async function main(ns) {
                         await ns.sleep(100);
                     }
                     if (ns.getOwnedAugmentations(true).length > ns.getOwnedAugmentations(false).length) {
-                        ns.installAugmentations("daemon.js");
+                        ns.installAugmentations("launch-mx.js");
                     }
                 }
             }

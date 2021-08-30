@@ -109,7 +109,7 @@ async function buildServerList(ns) {
         var host = hostsToScan.pop();
         var hostName = host[0];
         var hostParent = host[1];
-        if (!addedServers.includes(hostName])) {
+        if (!addedServers.includes(hostName)) {
             var connectedHosts = ns.scan(hostName);
             for (var i = 0; i < connectedHosts.length; i++) {
                 hostsToScan.push([connectedHosts[i], hostName]);
