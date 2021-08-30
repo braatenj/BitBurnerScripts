@@ -89,7 +89,7 @@ export async function main(ns) {
         {name: "ram-manager.js", shortName: "ram", isLaunched: false},
         {name: "agency-manager.js", shortName: "agent", isLaunched: false},
         {name: "aug-manager.js", shortName: "aug", isLaunched: false},
-        {name: "commit-crime.js", shortName: "crime", isLaunched: false}
+        {name: "commit-crime.js", shortName: "crime", isLaunched: false},
         {name: "backdoor-manager.js", shortName: "backdoor", isLaunched: false}
     ];
     
