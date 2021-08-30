@@ -5,6 +5,7 @@ var addedServers = [];
 var listOfNodes = [];
 
 export async function main(ns) {
+    ns.disableLog("ALL");
     serversToBackdoor = [];
     serversToBackdoor.push(buildServerObject(ns, "CSEC"));
     serversToBackdoor.push(buildServerObject(ns, "avmnite-02h"));
@@ -22,7 +23,7 @@ export async function main(ns) {
         for(var i = 0; serversToBackdoor.length; i++) {
             var server = serversToBackdoor[i];
             if(server.hasRoot() && server.canHack()) {
-                await doBackdoor(server);
+                await doBackdoor(ns, server);
             } else {
                 allServersBackdoored = false;
             }
@@ -81,11 +82,15 @@ function getPortCrackers(ns) {
 
 
 async function doBackdoor(ns, server) {
+    ns.print(`Attempting to backdoor ${server.name}`);
     var sequence = server.getConnectionSequence();
+    ns.print(`Retrieved connection sequence`);
     for(var i = 0; i < sequence.length; i++) {
         ns.connect(sequence[i]);
+        ns.print(`...connected to ${sequence[i]}`);
         await ns.sleep(200);
     }
+    ns.print(`Installing backdoor on ${server.name}`);
     await ns.installBackdoor();
 }
 
@@ -116,7 +121,7 @@ async function buildServerList(ns) {
             }
             addServer(buildNode(hostParent, hostName));
         }
-        await ns.sleep(10);
+        await ns.sleep(100);
     }
 }
 
