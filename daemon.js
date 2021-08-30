@@ -73,6 +73,7 @@ var bitnodeWeakenMult = null;
 // script entry point
 export async function main(ns) {
     // reset a bunch of stuff, hoping this fixes reset issues.
+    ns.disableLog("ALL");
     serverListRam = [];
     serverListMoney = [];
     addedServers = [];
@@ -89,6 +90,7 @@ export async function main(ns) {
         {name: "agency-manager.js", shortName: "agent", isLaunched: false},
         {name: "aug-manager.js", shortName: "aug", isLaunched: false},
         {name: "commit-crime.js", shortName: "crime", isLaunched: false}
+        {name: "backdoor-manager.js", shortName: "backdoor", isLaunched: false}
     ];
     
     // get the name of this node
@@ -258,7 +260,7 @@ function establishMultipliers(ns) {
 }
 
 function buildToolkit(ns) {
-    var toolNames = ["weak-target.js", "grow-target.js", "hack-target.js", "host-manager.js", "node-manager.js", "tor-manager.js", "program-manager.js", "ram-manager.js", "agency-manager.js", "aug-manager.js", "commit-crime.js"];
+    var toolNames = ["weak-target.js", "grow-target.js", "hack-target.js", "host-manager.js", "node-manager.js", "tor-manager.js", "program-manager.js", "ram-manager.js", "agency-manager.js", "aug-manager.js", "commit-crime.js", "backdoor-manager.js"];
     for (var i = 0; i < toolNames.length; i++) {
         var tool = {
             instance: ns,
@@ -289,6 +291,8 @@ function buildToolkit(ns) {
                         return "aug";
                     case "commit-crime.js":
                         return "crime";
+                    case "backdoor-manager.js":
+                        return "backdoor";
                 }
             },       
             canRun: function(server) {

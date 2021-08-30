@@ -13,7 +13,24 @@ export async function main(ns) {
     addedServers = [];
     listOfNodes = [];
 
+    var allServersBackdoored = false;
+
     await buildServerList(ns);
+
+    while(!allServersBackdoored) {
+        allServersBackdoored = true;
+        for(var i = 0; serversToBackdoor.length; i++) {
+            var server = serversToBackdoor[i];
+            if(server.hasRoot() && server.canHack()) {
+                await doBackdoor(server);
+            } else {
+                allServersBackdoored = false;
+            }
+        }
+        await ns.sleep(5000);
+    }
+
+
 
 
 
@@ -28,7 +45,26 @@ function buildServerObject(ns, node) {
         canHack: function() { return this.instance.getHackingLevel() > this.hackingRequired; },
         canCrack: function() { return  getPortCrackers(this.instance) > this.portsRequired; },
         hasRoot: function() { return this.instance.hasRootAccess(this.name); },
+        shouldBackdoor: function() {
+            var desiredServers = ["CSEC", "avmnite-02h", "I.I.I.I", "run4theh111z"];
+            return (desiredServers.includes(this.name) ? true : false);
+        },
+        getConnectionSequence: function() {
+            var hostName = this.name;
+            var connectSequence = [];
+            var currentHost = hostName;
+            while (currentHost !== "home") {
+                var index = getHostNodeIndex(currentHost);
+                var node = listOfNodes[index];
+                connectSequence.push(node.name);
+                currentHost = node.parent;
+            }
+
+            connectSequence.push("home");
+            return connectSequence.reverse();
+        }
     }
+    return server;
 }
 
 function getPortCrackers(ns) {
@@ -44,7 +80,14 @@ function getPortCrackers(ns) {
 
 
 
-
+async function doBackdoor(ns, server) {
+    var sequence = server.getConnectionSequence();
+    for(var i = 0; i < sequence.length; i++) {
+        ns.connect(sequence[i]);
+        await ns.sleep(200);
+    }
+    await ns.installBackdoor();
+}
 
 
 function buildNode(p, n) {
@@ -69,7 +112,7 @@ async function buildServerList(ns) {
         if (!addedServers.includes(hostName])) {
             var connectedHosts = ns.scan(hostName);
             for (var i = 0; i < connectedHosts.length; i++) {
-                hostsToScan.push([connectedHosts[i], hostParent]);
+                hostsToScan.push([connectedHosts[i], hostName]);
             }
             addServer(buildNode(hostParent, hostName));
         }
@@ -81,20 +124,6 @@ async function buildServerList(ns) {
 function addServer(node) {
     addedServers.push(node.name);
     listOfNodes.push(node);
-}
-
-function findConnectSequence(hostName) {
-    var connectSequence = [];
-    var currentHost = hostName;
-    while (currentHost !== "home") {
-        var index = getHostNodeIndex(hostName);
-        var node = listOfNodes[index];
-        connectSequence.push(node.name);
-        currentHost = node.parent;
-    }
-
-    connectSequence.push("home");
-    return connectSequence;
 }
 
 function getHostNodeIndex(hostName) {
