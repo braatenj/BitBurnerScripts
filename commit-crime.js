@@ -4,10 +4,11 @@ export async function main(ns) {
 
     while(shouldCommitCrime) {
         if(!ns.isBusy()) {
-            ns.commitCrime("Shoplift");
-            await ns.sleep(500);
+            ns.commitCrime("shoplift");
+            await ns.sleep(1000);
         }
         if(ns.getServerMoneyAvailable("home") > threshold) {
+            ns.print("Money has reached threshold, ceasing crimes");
             shouldCommitCrime = false;
         }
         
