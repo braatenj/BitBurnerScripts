@@ -1,6 +1,7 @@
 export async function main(ns) {
+    ns.disableLog("ALL");
     let shouldCommitCrime = true;
-    const fastThreshold = 10000000;
+    const fastThreshold = 1000000;
     const finalThreshold = 100000000;
     const fast = 1000;
     const slow = 30000;
@@ -15,7 +16,7 @@ export async function main(ns) {
         } else {
             await ns.sleep(fast);
         }
-        
+
         if(ns.getServerMoneyAvailable("home") > finalThreshold) {
             ns.print("Money has reached threshold, ceasing crimes");
             shouldCommitCrime = false;
