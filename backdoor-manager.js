@@ -22,6 +22,7 @@ export async function main(ns) {
         allServersBackdoored = true;
         for(var i = 0; serversToBackdoor.length; i++) {
             var server = serversToBackdoor[i];
+            ns.tprint(`Server: ${server.name}`);
             if(server.hasRoot() && server.canHack()) {
                 await doBackdoor(ns, server);
             } else {
