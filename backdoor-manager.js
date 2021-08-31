@@ -24,7 +24,7 @@ export async function main(ns) {
         for(var i = 0; i < serversToBackdoor.length; i++) {
             var server = serversToBackdoor[i];
             if(server.hasRoot() && server.canHack() && server.shouldBackdoor()) {
-                server.installBackdoor();
+                await server.installBackdoor();
             } else {
                 allServersBackdoored = false;
             }
@@ -61,7 +61,7 @@ function buildServerObject(ns, node) {
             connectSequence.push("home");
             return connectSequence.reverse();
         },
-        installBackdoor: function() {
+        installBackdoor: async function() {
             ns.print(`Attempting to backdoor ${server.name}`);
             var sequence = server.getConnectionSequence();
             ns.print(`Retrieved connection sequence`);
