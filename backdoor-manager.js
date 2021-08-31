@@ -21,7 +21,7 @@ export async function main(ns) {
 
     while(!allServersBackdoored) {
         allServersBackdoored = true;
-        for(var i = 0; serversToBackdoor.length; i++) {
+        for(var i = 0; i < serversToBackdoor.length; i++) {
             var server = serversToBackdoor[i];
             server.print();
             if(server.hasRoot() && server.canHack()) {
