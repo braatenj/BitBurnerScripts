@@ -25,11 +25,15 @@ export async function main(ns) {
             var server = serversToBackdoor[i];
             if(server.hasRoot() && server.canHack() && server.shouldBackdoor()) {
                 await server.installBackdoor();
-            } else {
+            }
+        await ns.sleep(5000);
+        }
+        for(var i = 0; i < serversToBackdoor.length; i++) {
+            var server = serversToBackdoor[i];
+            if(!server.backdoored) {
                 allServersBackdoored = false;
             }
         }
-        await ns.sleep(5000);
     }
 }
 
