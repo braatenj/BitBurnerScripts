@@ -4,6 +4,7 @@
 // once all programs are bought.
 
 export async function main(ns) {
+    ns.disableLog("ALL");
     const programNames = ["BruteSSH.exe", "FTPCrack.exe", "relaySMTP.exe", "HTTPWorm.exe", "SQLInject.exe", "DeepscanV1.exe", "DeepscanV2.exe", "Autolink.exe"];
     const programCosts = [500000, 1500000, 5000000, 30000000, 250000000, 500000, 25000000, 1000000];
     var hasAllPrograms = false;
@@ -12,6 +13,7 @@ export async function main(ns) {
             break;
         }
         if (!hasTor(ns)) {
+            ns.print(`Waiting for TOR to be purchased`);
             await ns.sleep(2000);
             continue;
         }
@@ -21,10 +23,12 @@ export async function main(ns) {
             if (hasProgram(ns, prog)) {
                 continue;
             } else {
+                ns.print(`Missing ${prog}`);
                 foundMissingProgram = true;
             }
             var cost = programCosts[i];
             if (cost <= getPlayerMoney(ns)) {
+                ns.print(`Purchasing ${prog} for ${cost}`);
                 ns.purchaseProgram(prog);
             }
         }

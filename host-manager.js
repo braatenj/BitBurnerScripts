@@ -14,6 +14,7 @@ const maxPurchasedServerRamExponent = 20;
 const maxPurchasedServers = 24;
 
 export async function main(ns) {
+    ns.disableLog("ALL");
     while(true) {
         tryToBuyBestServerPossible(ns);
         await ns.sleep(200);
@@ -90,8 +91,11 @@ function tryToBuyBestServerPossible(ns) {
     var utilizationTarget = 0.5;
     
     // abort if utilization is below target. We probably don't need another server.
-    if (utilizationRate < utilizationTarget)
+    if (utilizationRate < utilizationTarget) {
+        ns.print(`Utilization below threshold, not purchasing server.`)
         return "";
+    }
+        
     
     // abort if we're trying to buy a sucky box.
     if (isWorseThanExistingServer)
@@ -111,6 +115,7 @@ function tryToBuyBestServerPossible(ns) {
     if (currentMoney < cost)
         return "";
     
+    ns.print(`Purchasing server with ${maxRamPossibleToBuy}GB memory.`);
     var purchasedServer = ns.purchaseServer("daemon", maxRamPossibleToBuy);
     
     return purchasedServer;
