@@ -9,11 +9,6 @@ export async function main(ns) {
     var totalRam = 0;
     var totalRamUsed = 0;
     var totalRamFree = 0;
-<<<<<<< Updated upstream
-    var ramUtilization = 0;
-
-=======
->>>>>>> Stashed changes
     ns.tprint("--==-- Server Farm Stats --==--");
     for (var s = 0; s < serverNameList.length; s++) {
         var box = serverNameList[s];
