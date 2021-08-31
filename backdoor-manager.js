@@ -17,12 +17,13 @@ export async function main(ns) {
     var allServersBackdoored = false;
 
     await buildServerList(ns);
+    ns.tprintf(`serversToBackdoor[]: ${serversToBackdoor.toString()}`);
 
     while(!allServersBackdoored) {
         allServersBackdoored = true;
         for(var i = 0; serversToBackdoor.length; i++) {
             var server = serversToBackdoor[i];
-            ns.tprint(`Server: ${server.name} hasRoot: ${server.hasRoot()} canHack: ${server.canHack()}`);
+            server.print();
             if(server.hasRoot() && server.canHack()) {
                 await doBackdoor(ns, server);
             } else {
@@ -59,8 +60,16 @@ function buildServerObject(ns, node) {
 
             connectSequence.push("home");
             return connectSequence.reverse();
+        },
+        print: function() {
+            this.instance.tprintf(`****************`);
+            this.instance.tprintf(`Server: ${this.name}`);
+            this.instance.tprintf(`Connection Sequence: ${this.getConnectionSequence().toString()}`);
+            this.instance.tprintf(`Root: ${this.hasRoot()}`);
+            this.instance.tprintf(`CanCrack: ${this.canCrack()}`);
+            this.instance.tprintf(`CanHack: ${this.canHack()}`);
         }
-    }
+    };
     return server;
 }
 
