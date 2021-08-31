@@ -17,15 +17,14 @@ export async function main(ns) {
     var allServersBackdoored = false;
 
     await buildServerList(ns);
-    ns.tprintf(`serversToBackdoor[]: ${serversToBackdoor.toString()}`);
+    
 
     while(!allServersBackdoored) {
         allServersBackdoored = true;
         for(var i = 0; i < serversToBackdoor.length; i++) {
             var server = serversToBackdoor[i];
-            server.print();
-            if(server.hasRoot() && server.canHack()) {
-                await doBackdoor(ns, server);
+            if(server.hasRoot() && server.canHack() && server.shouldBackdoor()) {
+                server.installBackdoor();
             } else {
                 allServersBackdoored = false;
             }
@@ -40,12 +39,13 @@ function buildServerObject(ns, node) {
         name: node,
         hackingRequired: ns.getServerRequiredHackingLevel(node),
         portsRequired: ns.getServerNumPortsRequired(node),
+        backdoored: false,
         canHack: function() { return this.instance.getHackingLevel() > this.hackingRequired; },
         canCrack: function() { return  getPortCrackers(this.instance) > this.portsRequired; },
         hasRoot: function() { return this.instance.hasRootAccess(this.name); },
         shouldBackdoor: function() {
             var desiredServers = ["CSEC", "avmnite-02h", "I.I.I.I", "run4theh111z"];
-            return (desiredServers.includes(this.name) ? true : false);
+            return (desiredServers.includes(this.name) && !this.backdoored ? true : false);
         },
         getConnectionSequence: function() {
             var hostName = this.name;
@@ -60,6 +60,20 @@ function buildServerObject(ns, node) {
 
             connectSequence.push("home");
             return connectSequence.reverse();
+        },
+        installBackdoor: function() {
+            ns.print(`Attempting to backdoor ${server.name}`);
+            var sequence = server.getConnectionSequence();
+            ns.print(`Retrieved connection sequence`);
+            for(var i = 0; i < sequence.length; i++) {
+                ns.connect(sequence[i]);
+                ns.print(`...connected to ${sequence[i]}`);
+                await ns.sleep(200);
+            }
+            ns.print(`Installing backdoor on ${server.name}`);
+            await ns.installBackdoor();
+            this.backdoored = true;
+            await ns.sleep(10000);
         },
         print: function() {
             this.instance.tprintf(`****************`);
