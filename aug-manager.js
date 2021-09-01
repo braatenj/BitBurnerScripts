@@ -57,7 +57,7 @@ export async function main(ns) {
                             // we don't have enough rep for this faction so let's work until we do.
                             // we skip this if our favor is high enough to donate.
                             while (ns.getFactionRep(faction.name) < repCost && ns.getFactionFavor(faction.name) < 150) {
-                                ns.print(`[AUG MANAGER:${getTime()}] Working for ${faction.name} to reach ${repCost} repuation`);
+                                ns.print(`[AUG MANAGER:${getTime()}] Working for ${faction.name} currently ${ns.getFactionRep(faction.name)}/${repCost} reputation`);
                                 ns.workForFaction(faction.name, "hacking");
                                 await ns.sleep(60000);
                             }
