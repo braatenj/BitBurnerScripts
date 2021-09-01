@@ -7,9 +7,13 @@ export async function main(ns) {
     while (true) {
         // if our utilization rates are below half, we don't necessarily need more RAM
         if (ns.getUpgradeHomeRamCost() <= ns.getServerMoneyAvailable("home")) {
-            ns.print(`Upgrading Home Ram`);
+            ns.print(`[RAM MANAGER:${getTime()}] Upgrading Home Ram`);
             ns.upgradeHomeRam();
         }
         await ns.sleep(2000);
     }
+}
+
+function getTime() {
+    return new Date().toLocaleTimeString('en-US', {hour12: false, hour: "numeric", minute: "numeric"});
 }

@@ -35,7 +35,7 @@ function buildStock(ns, symbol) {
         totalValue: function() { var position = this.currentPosition(); return this.sharesOwned() * this.bidPrice(); },
         volatility: function() { return this.instance.getStockVolatility(this.symbol); },
         forecast: function() { return this.instance.getStockForecast(this.symbol); },
-        shouldBuy: function() { return (this.forecast() >= .6 && this.isRising()); },
+        shouldBuy: function() { return (this.forecast() >= .5 && this.isRising()); },
         buy: function(shares) { var result = false; if(this.instance.buyStock(this.symbol, shares) > 0) {result=true} return result; },
         buyMax: function() {
             var sharesNeeded = this.maxShares() - this.sharesOwned();

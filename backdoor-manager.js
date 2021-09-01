@@ -66,15 +66,15 @@ function buildServerObject(ns, node) {
             return connectSequence.reverse();
         },
         installBackdoor: async function() {
-            ns.print(`Attempting to backdoor ${server.name}`);
+            ns.print(`[BACKDOOR MANAGER:${getTime()}] Attempting to backdoor ${server.name}`);
             var sequence = server.getConnectionSequence();
-            ns.print(`Retrieved connection sequence`);
+            ns.print(`[BACKDOOR MANAGER:${getTime()}] Retrieved connection sequence`);
             for(var i = 0; i < sequence.length; i++) {
                 ns.connect(sequence[i]);
-                ns.print(`...connected to ${sequence[i]}`);
+                ns.print(`[BACKDOOR MANAGER:${getTime()}] connected to ${sequence[i]}`);
                 await ns.sleep(200);
             }
-            ns.print(`Installing backdoor on ${server.name}`);
+            ns.print(`[BACKDOOR MANAGER:${getTime()}] Installing backdoor on ${server.name}`);
             await ns.installBackdoor();
             this.backdoored = true;
             await ns.sleep(10000);
@@ -105,15 +105,15 @@ function getPortCrackers(ns) {
 
 
 async function doBackdoor(ns, server) {
-    ns.tprintf(`Attempting to backdoor ${server.name}`);
+    ns.tprintf(`[BACKDOOR MANAGER:${getTime()}] Attempting to backdoor ${server.name}`);
     var sequence = server.getConnectionSequence();
-    ns.tprintf(`Retrieved connection sequence`);
+    ns.tprintf(`[BACKDOOR MANAGER:${getTime()}] Retrieved connection sequence`);
     for(var i = 0; i < sequence.length; i++) {
         ns.connect(sequence[i]);
-        ns.tprintf(`...connected to ${sequence[i]}`);
+        ns.tprintf(`[BACKDOOR MANAGER:${getTime()}] connected to ${sequence[i]}`);
         await ns.sleep(200);
     }
-    ns.tprintf(`Installing backdoor on ${server.name}`);
+    ns.tprintf(`[BACKDOOR MANAGER:${getTime()}] Installing backdoor on ${server.name}`);
     await ns.installBackdoor();
     await ns.sleep(10000);
 }
@@ -161,4 +161,8 @@ function getHostNodeIndex(hostName) {
             return i;
         }
     }
+}
+
+function getTime() {
+    return new Date().toLocaleTimeString('en-US', {hour12: false, hour: "numeric", minute: "numeric"});
 }

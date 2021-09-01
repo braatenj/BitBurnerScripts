@@ -92,7 +92,7 @@ function tryToBuyBestServerPossible(ns) {
     
     // abort if utilization is below target. We probably don't need another server.
     if (utilizationRate < utilizationTarget) {
-        ns.print(`Utilization below threshold, not purchasing server.`)
+        ns.print(`[HOST MANAGER: ${getTime()}] Utilization below threshold, skipping purchase.`);
         return "";
     }
         
@@ -105,6 +105,7 @@ function tryToBuyBestServerPossible(ns) {
     if (existingServers.length >= maxPurchasedServers) {
         var listOfScripts = ns.ps(worstServer);
         if (listOfScripts.length === 0 && worstServerRam < maxRamPossibleToBuy) {
+            ns.print(`[HOST MANAGER: ${getTime()}] Removing ${worstServer}`);
             ns.deleteServer(worstServer);
         }
     }
@@ -115,8 +116,12 @@ function tryToBuyBestServerPossible(ns) {
     if (currentMoney < cost)
         return "";
     
-    ns.print(`Purchasing server with ${maxRamPossibleToBuy}GB memory.`);
+    ns.print(`[HOST MANAGER: ${getTime()}] Purchasing server with ${maxRamPossibleToBuy}GB memory.`);
     var purchasedServer = ns.purchaseServer("daemon", maxRamPossibleToBuy);
     
     return purchasedServer;
+}
+
+function getTime() {
+    return new Date().toLocaleTimeString('en-US', {hour12: false, hour: "numeric", minute: "numeric"});
 }

@@ -7,8 +7,8 @@ export async function main(ns) {
         var info = ns.getCharacterInformation();
         var factions = info.factions;
         if (factions.length === 0) {
-            ns.print(`Player is not part of any factions`)
-            await ns.sleep(5000);
+            ns.print(`[AUG MANAGER:${getTime()}] Player is not part of any factions`)
+            await ns.sleep(10000);
             continue;
         }
             
@@ -28,7 +28,7 @@ export async function main(ns) {
                 if (ns.getFactionFavor(faction.name) + ns.getFactionFavorGain(faction.name) >= 150 && ns.getFactionFavor(faction.name) < 150) {
                     while (ns.getAugmentationCost(neuroFlux)[1] <= ns.getServerMoneyAvailable("home") && ns.getAugmentationCost(neuroFlux)[0] <= ns.getFactionRep(faction.name)) {
                         ns.purchaseAugmentation(faction.name, neuroFlux);
-                        ns.print("Purchasing aug from " + faction.name + ": " + neuroFlux);
+                        ns.print(`[AUG MANAGER:${getTime()}] Purchasing aug from ${faction.name}: ${neuroFlux}`);
                         await ns.sleep(100);
                     }
                     if (ns.getOwnedAugmentations(true).length > ns.getOwnedAugmentations(false).length) {
@@ -51,15 +51,15 @@ export async function main(ns) {
                         if (repCost <= ns.getFactionRep(faction.name)) {
                             if (cashCost <= ns.getServerMoneyAvailable("home")) {
                                 ns.purchaseAugmentation(faction.name, aug);
-                                ns.print("Purchasing aug from " + faction.name + ": " + aug);
+                                ns.print(`[AUG MANAGER:${getTime()}] Purchasing aug from ${faction.name}: ${aug}`);
                             }
                         } else {
                             // we don't have enough rep for this faction so let's work until we do.
                             // we skip this if our favor is high enough to donate.
                             while (ns.getFactionRep(faction.name) < repCost && ns.getFactionFavor(faction.name) < 150) {
-                                ns.print(`Working for ${faction.name} to reach ${repCost} repuation`);
+                                ns.print(`[AUG MANAGER:${getTime()}] Working for ${faction.name} to reach ${repCost} repuation`);
                                 ns.workForFaction(faction.name, "hacking");
-                                await ns.sleep(30000);
+                                await ns.sleep(60000);
                             }
                             ns.stopAction();
                         }
@@ -71,9 +71,9 @@ export async function main(ns) {
                 // we have all the augs but they're not installed yet
                 if (hasAllFactionAugs && !augsAlreadyInstalled) {
                     while (ns.getAugmentationCost(neuroFlux)[1] <= ns.getServerMoneyAvailable("home") && ns.getAugmentationCost(neuroFlux)[0] <= ns.getFactionRep(faction.name)) {
-                        ns.print(`buying all neuroFlux before installing augmentations`);
+                        ns.print(`[AUG MANAGER:${getTime()}] Buying neuroFlux before installing augmentations`);
                         ns.purchaseAugmentation(faction.name, neuroFlux);
-                        ns.print("Purchasing aug from " + faction.name + ": " + neuroFlux);
+                        ns.print(`[AUG MANAGER:${getTime()}] Purchasing aug from ${faction.name}: ${neuroFlux}`);
                         await ns.sleep(100);
                     }
                     if (ns.getOwnedAugmentations(true).length > ns.getOwnedAugmentations(false).length) {
@@ -98,4 +98,8 @@ function getDesiredFactions(ns) {
         {name:"Daedalus"}
     ];
     return factionList;
+}
+
+function getTime() {
+    return new Date().toLocaleTimeString('en-US', {hour12: false, hour: "numeric", minute: "numeric"});
 }
